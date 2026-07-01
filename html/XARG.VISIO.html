@@ -1,1 +1,29 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>XARG VISIO – Kette</title>
+  <style>
+    body { background:#000; color:#0f0; font-family:monospace; padding:20px; }
+    pre { border:1px solid #0f0; padding:10px; margin-top:20px; }
+    button { padding:10px 20px; }
+  </style>
+</head>
+<body>
 
+<h1>XARG VISIO – MIR → RESPO → ARG → DIR → REAL</h1>
+<button id="run">Pipeline starten</button>
+<pre id="out"></pre>
+
+<script type="module">
+  import { XARG_PIPE } from "./XARG.pipe.js";
+
+  const out = document.getElementById("out");
+  document.getElementById("run").addEventListener("click", () => {
+    const result = XARG_PIPE("VISIO-IMPULSE");
+    out.textContent = JSON.stringify(result, null, 2);
+  });
+</script>
+
+</body>
+</html>
