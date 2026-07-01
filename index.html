@@ -1,1 +1,54 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>RUN8 + XARG – VISIO</title>
+  <style>
+    body { background:#000; color:#0f0; font-family:monospace; padding:20px; }
+    h1 { margin-bottom:10px; }
+    button { padding:10px 20px; margin-bottom:20px; }
+    pre { border:1px solid #0f0; padding:10px; }
+  </style>
+</head>
+<body>
+
+<h1>RUN8 → MIR → RESPO → ARG → DIR → REAL → XARG</h1>
+<button id="run">Pipeline starten</button>
+
+<pre id="out"></pre>
+
+<script type="module">
+
+  // --- MODULES (deine echten RUN8/XARG Module)
+
+  import { OCTACORE } from "./OCTACORE.js";
+  import { SAT } from "./SAT.js";
+  import { WURMLOCH } from "./WURMLOCH.js";
+  import { NC_LINK } from "./NC.link.js";
+  import { OCTACORE_PIPE } from "./OCTACORE.pipe.js";
+
+  import { XARG_PIPE } from "./XARG.pipe.js";
+
+  // --- UI
+  const out = document.getElementById("out");
+
+  document.getElementById("run").addEventListener("click", () => {
+
+    // RUN8 → OCTACORE → SAT → WURMLOCH → NC.link
+    const run8 = OCTACORE_PIPE("N");
+
+    // XARG → MIR → RESPO → ARG → DIR → REAL
+    const xarg = XARG_PIPE("RUN8-IMPULSE");
+
+    // Ausgabe
+    out.textContent = JSON.stringify({
+      RUN8: run8,
+      XARG: xarg
+    }, null, 2);
+  });
+
+</script>
+
+</body>
+</html>
 
