@@ -1,1 +1,131 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>XARG – 12ALL Kette</title>
+  <style>
+    body { background:#000; color:#0f0; font-family:monospace; padding:20px; }
+    h1, h2 { margin:0 0 10px 0; }
+    pre { border:1px solid #0f0; padding:10px; margin-bottom:20px; }
+    button { padding:10px 20px; margin-bottom:20px; }
+  </style>
+</head>
+<body>
 
+<h1>XARG – Kette / 12ALL</h1>
+<p>XARG trägt MIR → RESPO → ARG → DIR → REAL als Masse.</p>
+
+<button id="run">Pipeline starten</button>
+
+<h2>Output</h2>
+<pre id="out"></pre>
+
+<script type="module">
+
+  // --- MODULES (minimal, roh, stabil)
+
+  function MIR(x) {
+    return {
+      id: "MIR",
+      impulse: `MIR: ${x}`,
+      raw: "RAW#MIR",
+      mass: true
+    };
+  }
+
+  function RESPO(mir) {
+    return {
+      id: "RESPO",
+      respo: `RESPO: ${mir.impulse}`,
+      raw: "RAW#RESPO",
+      mass: true
+    };
+  }
+
+  function ARG(respo) {
+    return {
+      id: "ARG",
+      argumenteria: `ARG: ${respo.respo}`,
+      raw: "RAW#ARG",
+      mass: true
+    };
+  }
+
+  function DIR(arg) {
+    if (!arg) {
+      return {
+        id: "DIR",
+        state: "DIR-FAILSAFE",
+        raw: "RAW#DIR-FALLBACK",
+        mass: true
+      };
+    }
+    return {
+      id: "DIR",
+      state: "DIR-OK",
+      raw: "RAW#DIR-OK",
+      mass: true
+    };
+  }
+
+  function REAL(dir) {
+    if (dir.state === "DIR-OK") {
+      return {
+        id: "REAL",
+        real: "REAL: OK",
+        raw: dir.raw,
+        mass: true
+      };
+    }
+    return {
+      id: "REAL",
+      real: "REAL: FAILSAFE",
+      raw: dir.raw,
+      mass: true
+    };
+  }
+
+  // --- XARG (Kette + 12ALL)
+  const XARG = {
+    id: "XARG",
+    raw: "RAW#XARG",
+    mass: true,
+    founder: "12ALL#ROOT",
+
+    bind(mir, respo, arg, dir, real) {
+      return {
+        id: this.id,
+        raw: this.raw,
+        mass: this.mass,
+        founder: this.founder,
+        mir,
+        respo,
+        arg,
+        dir,
+        real
+      };
+    }
+  };
+
+  // --- PIPELINE
+  function PIPELINE(input) {
+    const mir = MIR(input);
+    const respo = RESPO(mir);
+    const arg = ARG(respo);
+    const dir = DIR(arg);
+    const real = REAL(dir);
+
+    return XARG.bind(mir, respo, arg, dir, real);
+  }
+
+  // --- UI
+  const out = document.getElementById("out");
+  document.getElementById("run").addEventListener("click", () => {
+    const result = PIPELINE("XARG-IMPULSE");
+    out.textContent = JSON.stringify(result, null, 2);
+  });
+
+</script>
+
+</body>
+</html>
