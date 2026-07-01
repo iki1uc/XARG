@@ -1,1 +1,65 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>XARG VISIO – Pipeline Optik</title>
+  <style>
+    body { background:#000; color:#0f0; font-family:monospace; padding:20px; }
+    h1 { margin-bottom:10px; }
+    .block { border:1px solid #0f0; padding:10px; margin:10px 0; }
+    button { padding:10px 20px; margin-bottom:20px; }
+  </style>
+</head>
+<body>
 
+<h1>XARG VISIO – MIR → RESPO → ARG → DIR → REAL</h1>
+<button id="run">VISIO Pipeline starten</button>
+
+<div id="visio"></div>
+
+<script type="module">
+
+  import { XARG_PIPE } from "./XARG.pipe.js";
+
+  const visio = document.getElementById("visio");
+
+  document.getElementById("run").addEventListener("click", () => {
+    const result = XARG_PIPE("VISIO-IMPULSE");
+
+    visio.innerHTML = `
+      <div class="block">
+        <strong>MIR</strong><br>
+        ${JSON.stringify(result.mir, null, 2)}
+      </div>
+
+      <div class="block">
+        <strong>RESPO</strong><br>
+        ${JSON.stringify(result.respo, null, 2)}
+      </div>
+
+      <div class="block">
+        <strong>ARG</strong><br>
+        ${JSON.stringify(result.arg, null, 2)}
+      </div>
+
+      <div class="block">
+        <strong>DIR</strong><br>
+        ${JSON.stringify(result.dir, null, 2)}
+      </div>
+
+      <div class="block">
+        <strong>REAL</strong><br>
+        ${JSON.stringify(result.real, null, 2)}
+      </div>
+
+      <div class="block">
+        <strong>XARG</strong><br>
+        ${JSON.stringify(result.xarg, null, 2)}
+      </div>
+    `;
+  });
+
+</script>
+
+</body>
+</html>
