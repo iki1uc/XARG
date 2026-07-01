@@ -1,1 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>XARG MASS</title>
+<style>
+  body { background:#000; color:#0f0; font-family:monospace; padding:20px; }
+  pre { border:1px solid #0f0; padding:10px; }
+</style>
+</head>
+<body>
 
+<h1>XARG MASS</h1>
+<button id="run">MASS starten</button>
+<pre id="out"></pre>
+
+<script type="module">
+import { XARG_PIPE } from "./XARG.pipe.js";
+
+document.getElementById("run").onclick = () => {
+  const r = XARG_PIPE("MASS");
+  const ok = r ? "OK" : "0";
+  out.textContent = ok;
+};
+</script>
+
+</body>
+</html>
